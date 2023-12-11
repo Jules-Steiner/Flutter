@@ -1,4 +1,4 @@
-import 'package:projet_flutter_tram/ui/screens/departure%20_time.dart';
+import 'package:projet_flutter_tram/ui/screens/departure_time.dart';
 import 'package:projet_flutter_tram/ui/screens/map.dart';
 import 'package:projet_flutter_tram/ui/screens/stops_list.dart';
 
