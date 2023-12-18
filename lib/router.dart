@@ -8,8 +8,8 @@ class AppRouter {
   static const String stopsListPage = '/stops_list';
 
   static final routes = {
-    mapPage: (context) =>  Map(),
-    departureTimesPage: (context) =>  DepartureTimes(),
+    mapPage: (context) =>  const Map(),
+    departureTimesPage: (context) =>  DepartureTime(),
     stopsListPage: (context) =>  StopsList(),
   };
 }
