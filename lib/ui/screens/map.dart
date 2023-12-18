@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:projet_flutter_tram/router.dart';
 
 class Map extends StatefulWidget {
   const Map({Key? key}) : super(key: key);
@@ -19,8 +20,10 @@ class _MapState extends State<Map> {
     });
   }
 
-  void _onMarkerTap(String name) {
-    print('Marker tapped: $name');
+  void _onMarkerTap(BuildContext context, String name) {
+    Navigator.of(context).pushNamed(AppRouter.departureTimesPage);
+    // You can also pass data to DepartureTime screen if needed
+    // Navigator.pushNamed(context, '/departure_times', arguments: {'name': name});
   }
 
   @override
@@ -49,10 +52,12 @@ class _MapState extends State<Map> {
                   point: LatLng(location['lat']! as double, location['lng']! as double),
                   builder: (ctx) => GestureDetector(
                     onTap: () {
-                      _onMarkerTap(location['name']! as String);
+                      _onMarkerTap(context, location['name']! as String);
                     },
                     child: Container(
+                      width: 80.0, // Définir la largeur pour aligner les marqueurs horizontalement
                       child: Stack(
+                        alignment: Alignment.center, // Aligner les éléments au centre horizontalement
                         children: [
                           Icon(
                             Icons.location_pin,
@@ -60,8 +65,7 @@ class _MapState extends State<Map> {
                             size: 40.0,
                           ),
                           Positioned(
-                            top: 15,
-                            left: 0,
+                            top: 45,
                             child: Container(
                               padding: EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
