@@ -21,9 +21,9 @@ class BusStopRepository {
           locationType: int.parse(row[5].toString()),
           stopTimezone: row[6].toString(),
           wheelchairBoarding: int.parse(row[7].toString()),
-          tripA: row[8] != null && row[8].toString().isNotEmpty ? int.parse(row[8].toString()) : -1,
-          tripB: row[9] != null && row[9].toString().isNotEmpty ? int.parse(row[9].toString()) : -1,
-          tripC: row[10] != null && row[10].toString().isNotEmpty ? int.parse(row[10].toString()) : -1,
+          tripA: int.parse(row[8].toString()),
+          tripB: int.parse(row[9].toString()),
+          tripC: int.parse(row[10].toString()),
         );
 
         // Regrouper les arrêts par ligne
@@ -32,7 +32,7 @@ class BusStopRepository {
           if (busStopsMap[lineKey] == null) {
             busStopsMap[lineKey] = [];
           }
-          if(row.length > i && int.parse(row[i].toString()) > 0) {
+          if(row.length > i && int.parse(row[i].toString()) > -1) {
             String stopName = busStop.stopName;
             print('Ligne $lineKey, arret $stopName');
             busStopsMap[lineKey]!.add(busStop);
