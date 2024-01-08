@@ -3,7 +3,14 @@ import 'package:http/http.dart' as http;
 import 'package:projet_flutter_tram/models/bus_stop.dart';
 import 'package:xml/xml.dart';
 
-class DepartureTime extends StatelessWidget {
+class DepartureTime extends StatefulWidget {
+  @override
+  _DepartureTimeState createState() => _DepartureTimeState();
+}
+
+class _DepartureTimeState extends State<DepartureTime> {
+  List<String> departureTimesList = [];
+
   Future<void> fetchDepartureTimes(BusStop busStop) async {
     var headers = {
       'Content-Type': 'application/xml',
@@ -55,8 +62,9 @@ class DepartureTime extends StatelessWidget {
         }
       }
 
-      print('Horaires de départ : $departureTimes');
-      // Mettez à jour l'état de votre widget ou effectuez d'autres opérations nécessaires
+      setState(() {
+        departureTimesList = departureTimes;
+      });
     } else {
       print(response.reasonPhrase);
       // Gérez les erreurs ici
@@ -75,8 +83,22 @@ class DepartureTime extends StatelessWidget {
       appBar: AppBar(
         title: Text('Map Page'),
       ),
-      body: Center(
-        child: Text('Arrêt sélectionné : ${busStop.stopName}'),
+      body: Column(
+        children: [
+          Center(
+            child: Text('Arrêt sélectionné : ${busStop.stopName}'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: departureTimesList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(departureTimesList[index]),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
