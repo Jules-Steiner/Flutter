@@ -35,6 +35,8 @@ dependencies:
   latlong2: ^0.8.2
   flutter:
     sdk: flutter
+  
+  csv: 5.1.1
 
 
 
@@ -58,6 +60,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/stops.csv
+    - assets/trips.csv
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
