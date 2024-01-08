@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projet_flutter_tram/models/bus_stop.dart';
 import 'package:projet_flutter_tram/repositories/bus_stop_repository.dart';
+import 'package:projet_flutter_tram/router.dart';
 
 class StopsList extends StatefulWidget {
   @override
@@ -60,7 +61,12 @@ class _StopsListState extends State<StopsList> {
                       BusStop busStop = busStopsMap[selectedLine]![index];
                       return ListTile(
                         title: Text(busStop.stopName),
-                        subtitle: Text('Latitude: ${busStop.stopLat}, Longitude: ${busStop.stopLon}'),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            AppRouter.departureTimesPage,
+                            arguments: {'busStop': busStop},
+                          );
+                        },
                       );
                     },
                   ),
