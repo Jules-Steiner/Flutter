@@ -1,10 +1,10 @@
 stop_id,stop_code,stop_name,stop_lat,stop_lon,location_type,stop_timezone,wheelchair_boarding,A,B,C
 1AARD,5009,Avrillé - Ardenne,47.511486,-0.5960120000000001,0,Europe/Paris,1,0,-1,-1
 1ANRO,3935,Roseraie,47.443849,-0.5538860000000001,0,Europe/Paris,1,24,-1,18
-1ACAS,16233,Acacias,47.503646,-0.5863750000000001,0,Europe/Paris,1,3,0,-1
+1ACAS,16233,Acacias,47.503646,-0.5863750000000001,0,Europe/Paris,1,3,-1,-1
 1BEAU,,Beaussier,47.476478,-0.5992810000000001,0,Europe/Paris,1,-1,1,1
 1BMAI,16196,Berges de Maine,47.479341,-0.5493820000000001,0,Europe/Paris,1,12,-1,-1
-1BASC,4827,Bascule,47.508686,-0.591659,0,Europe/Paris,1,1,0,17
+1BASC,4827,Bascule,47.508686,-0.591659,0,Europe/Paris,1,1,-1,17
 1BROY,32629,Bois du Roy,47.499605,-0.5831590000000001,0,Europe/Paris,1,4,-1,-1
 1BARR,,La Barre,47.473174,-0.5987260000000001,0,Europe/Paris,1,-1,2,2
 1BOTA,24128,Terra Botanica,47.494224,-0.5746170000000002,0,Europe/Paris,1,6,-1,-1
