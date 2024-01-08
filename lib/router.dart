@@ -1,4 +1,5 @@
-import 'package:projet_flutter_tram/ui/screens/departure%20_time.dart';
+import 'package:flutter/material.dart';
+import 'package:projet_flutter_tram/ui/screens/departure_time.dart';
 import 'package:projet_flutter_tram/ui/screens/map.dart';
 import 'package:projet_flutter_tram/ui/screens/stops_list.dart';
 
@@ -7,9 +8,9 @@ class AppRouter {
   static const String departureTimesPage = '/departure_times';
   static const String stopsListPage = '/stops_list';
 
-  static final routes = {
-    mapPage: (context) =>  Map(),
-    departureTimesPage: (context) =>  DepartureTimes(),
+  static final Map<String, WidgetBuilder> routes = {
+    mapPage: (context) =>  MapPage(),
+    departureTimesPage: (context) =>  DepartureTime(),
     stopsListPage: (context) =>  StopsList(),
   };
 }
