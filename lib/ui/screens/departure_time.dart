@@ -76,7 +76,6 @@ class _DepartureTimeState extends State<DepartureTime> {
           int minutesRemaining = arrivalDateTime.difference(now).inMinutes;
           String formattedTime = "${arrivalDateTime.hour}:${arrivalDateTime.minute}:${arrivalDateTime.second}";
           
-          // Utilisez lineRef et destinationDisplay comme vous le souhaitez
           String lineAndDestination = "Ligne $lineRef - Destination $destinationDisplay";
 
           departureTimes.add("$formattedTime - $minutesRemaining min - $lineAndDestination");

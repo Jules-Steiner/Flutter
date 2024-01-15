@@ -23,7 +23,6 @@ class _AngersMapState extends State<AngersMap> {
 
   void _onItemTapped(int index) {
     setState(() {
-      // Votre logique pour le changement d'état ici
     });
   }
 
@@ -39,7 +38,6 @@ class _AngersMapState extends State<AngersMap> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Carte'),
-        // Vous pouvez ajouter des actions, des icônes ou d'autres éléments à l'app bar ici
       ),
       body: FutureBuilder(
           future: busStopRepository.loadBusStops('assets/stops.csv'),
@@ -87,7 +85,7 @@ class _AngersMapState extends State<AngersMap> {
                                 children: [
                                   const Icon(
                                     Icons.location_pin,
-                                    color: Colors.red, // Utilisation d'une seule couleur ici, vous pouvez adapter selon vos besoins
+                                    color: Colors.red,
                                     size: 40.0,
                                   ),
                                   Positioned(
@@ -123,7 +121,6 @@ class _AngersMapState extends State<AngersMap> {
           Navigator.of(context).pushNamed(AppRouter.stopsListPage);
         },
         child: Icon(Icons.list),
-        // Vous pouvez ajouter un label ou un tooltip au floating button si nécessaire
       ),
     );
   }

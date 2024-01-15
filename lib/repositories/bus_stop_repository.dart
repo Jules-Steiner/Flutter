@@ -26,7 +26,6 @@ class BusStopRepository {
           tripC: int.parse(row[10].toString()),
         );
 
-        // Regrouper les arrêts par ligne
         for (int i = 8; i <= 10; i++) {
           String lineKey = String.fromCharCode(65 + i - 8);
           if (busStopsMap[lineKey] == null) {
@@ -41,7 +40,6 @@ class BusStopRepository {
       } catch (e) {
         print('Erreur lors de la conversion : $e');
         print('Ligne CSV problématique : $row');
-        // Gérer l'erreur selon vos besoins
       }
     }
     busStopsMap['A']?.sort((a, b) => a.tripA.compareTo(b.tripA));
@@ -51,7 +49,7 @@ class BusStopRepository {
     return busStopsMap;
   } catch (e) {
     print('Erreur lors du chargement des arrêts de bus : $e');
-    throw e; // Lancez l'erreur pour la capturer dans votre FutureBuilder
+    throw e;
   }
   }
 }

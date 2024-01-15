@@ -5,7 +5,7 @@ import 'package:projet_flutter_tram/router.dart';
 
 class StopsList extends StatefulWidget {
   @override
-  _StopsListState createState() => _StopsListState(); // Correction du nom de la classe d'état
+  _StopsListState createState() => _StopsListState();
 }
 
 class _StopsListState extends State<StopsList> {
@@ -36,7 +36,6 @@ class _StopsListState extends State<StopsList> {
           } else {
             Map<String, List<BusStop>> busStopsMap = snapshot.data!;
             
-            // Utiliser le menu déroulant
             return Column(
               children: [
                 DropdownButton<String>(
