@@ -67,7 +67,7 @@ class _AngersMapState extends State<AngersMap> {
                     markers: [
                       for (final entry in busStopsMap.entries)
                         ...entry.value.map((busStop) => Marker(
-                          width: 80.0,
+                          width: 150.0,
                           height: 80.0,
                           point: LatLng(
                             busStop.stopLat,
