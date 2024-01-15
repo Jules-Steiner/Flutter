@@ -4,14 +4,26 @@ import 'package:projet_flutter_tram/models/bus_stop.dart';
 import 'package:xml/xml.dart';
 
 class DepartureTime extends StatefulWidget {
+  const DepartureTime({super.key});
+
   @override
   _DepartureTimeState createState() => _DepartureTimeState();
 }
 
 class _DepartureTimeState extends State<DepartureTime> {
   List<String> departureTimesList = [];
+  bool isButtonEnabled = true;
+  String currentBusStop = "";
 
   Future<void> fetchDepartureTimes(BusStop busStop) async {
+    if(busStop.stopId != "1AARD") {
+      if (isButtonEnabled) {
+        currentBusStop = '2${busStop.stopId.substring(1)}';
+      } else {
+        currentBusStop = '1${busStop.stopId.substring(1)}';
+      }
+    }
+
     var headers = {
       'Content-Type': 'application/xml',
     };
@@ -31,7 +43,7 @@ class _DepartureTimeState extends State<DepartureTime> {
             <Request version="2.0:FR-IDF-2.4">
                 <siri:RequestTimestamp></siri:RequestTimestamp>
                 <siri:MessageIdentifier>Test:Message::1c9d068d-fad2-4b71-a20a-7716195fc6f6:LOC</siri:MessageIdentifier>
-                <siri:MonitoringRef>${busStop.stopId}</siri:MonitoringRef>
+                <siri:MonitoringRef>$currentBusStop</siri:MonitoringRef>
                 <siri:StopVisitTypes>all</siri:StopVisitTypes>
             </Request>
             <RequestExtension />
@@ -46,19 +58,28 @@ class _DepartureTimeState extends State<DepartureTime> {
     if (response.statusCode == 200) {
       final String responseBody = await response.stream.bytesToString();
       final xmlDocument = XmlDocument.parse(responseBody);
-      print(responseBody);
 
-      // Exemple: Extraire les horaires de passage des bus
       final List<String> departureTimes = [];
       final monitoredVisits = xmlDocument.findAllElements('siri:MonitoredStopVisit');
       
       for (var visit in monitoredVisits) {
         var vehicleJourney = visit.findElements('siri:MonitoredVehicleJourney').first;
         var monitoredCall = vehicleJourney.findElements('siri:MonitoredCall').first;
+        var lineRef = vehicleJourney.findElements('siri:LineRef').first.text;
+        var destinationDisplay = monitoredCall.findElements('siri:DestinationDisplay').first.text;
         var expectedArrivalTime = monitoredCall.findElements('siri:ExpectedArrivalTime').first.text;
 
         if (expectedArrivalTime.isNotEmpty) {
-          departureTimes.add(expectedArrivalTime);
+          DateTime arrivalDateTime = DateTime.parse(expectedArrivalTime);
+          DateTime now = DateTime.now();
+          
+          int minutesRemaining = arrivalDateTime.difference(now).inMinutes;
+          String formattedTime = "${arrivalDateTime.hour}:${arrivalDateTime.minute}:${arrivalDateTime.second}";
+          
+          // Utilisez lineRef et destinationDisplay comme vous le souhaitez
+          String lineAndDestination = "Ligne $lineRef - Destination $destinationDisplay";
+
+          departureTimes.add("$formattedTime - $minutesRemaining min - $lineAndDestination");
         }
       }
 
@@ -67,8 +88,13 @@ class _DepartureTimeState extends State<DepartureTime> {
       });
     } else {
       print(response.reasonPhrase);
-      // Gérez les erreurs ici
     }
+  }
+
+  void toggleButtonText() {
+    setState(() {
+      isButtonEnabled = !isButtonEnabled;
+    });
   }
 
   @override
@@ -76,24 +102,31 @@ class _DepartureTimeState extends State<DepartureTime> {
     final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final BusStop busStop = args['busStop'];
 
-    // Appeler la fonction pour récupérer les données
     fetchDepartureTimes(busStop);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Map Page'),
+        title: Text(busStop.stopName),
       ),
       body: Column(
         children: [
-          Center(
-            child: Text('Arrêt sélectionné : ${busStop.stopName}'),
+          ElevatedButton(
+            onPressed: toggleButtonText,
+            child: const Text("Changer de destination"),
           ),
           Expanded(
             child: ListView.builder(
               itemCount: departureTimesList.length,
               itemBuilder: (context, index) {
+                List<String> parts = departureTimesList[index].split(' - ');
+                String formattedTime = parts[0];
+                String minutesRemaining = parts[1];
+                String line = parts[2];
+                String destination = parts[3];
+
                 return ListTile(
-                  title: Text(departureTimesList[index]),
+                  title: Text("$line - Dans $minutesRemaining"),
+                  subtitle: Text("$formattedTime - $destination"),
                 );
               },
             ),
