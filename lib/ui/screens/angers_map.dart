@@ -75,14 +75,17 @@ class _AngersMapState extends State<AngersMap> {
                           ),
                           builder: (ctx) => GestureDetector(
                             onTap: () {
-                              _onMarkerTap(context, busStop.stopName);
+                              Navigator.of(context).pushNamed(
+                                AppRouter.departureTimesPage,
+                                arguments: {'busStop': busStop},
+                              );
                             },
                             child: Container(
                               width: 80.0,
                               child: Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.location_pin,
                                     color: Colors.red, // Utilisation d'une seule couleur ici, vous pouvez adapter selon vos besoins
                                     size: 40.0,
