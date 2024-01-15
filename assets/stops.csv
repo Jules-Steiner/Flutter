@@ -31,8 +31,8 @@ stop_id,stop_code,stop_name,stop_lat,stop_lon,location_type,stop_timezone,wheelc
 1LAFA,31950,La Fayette,47.460812,-0.5547230000000001,0,Europe/Paris,1,19,-1,13
 1LGAR,20910,Les Gares,47.464465,-0.5554650000000001,0,Europe/Paris,1,18,-1,12
 1MOLIE,,Molière,47.474077,-0.5555330000000001,0,Europe/Paris,1,-1,8,8
-1MTAI,,Montaigne,47.469226,-0.5328030000000001,0,Europe/Paris,1,-1,12,
-1MONP,,Monplaisir,47.488903,-0.5268290000000001,0,Europe/Paris,1,-1,17,
+1MTAI,,Montaigne,47.469226,-0.5328030000000001,0,Europe/Paris,1,-1,12,-1
+2MONP,,Monplaisir,47.488903,-0.5268290000000001,0,Europe/Paris,1,-1,17,-1
 1PMAY,17915,Plateau Mayenne,47.49571,-0.5800510000000001,0,Europe/Paris,1,5,-1,-1
 1PATT,,Patton,47.473358,-0.5925580000000001,0,Europe/Paris,1,-1,3,3
 1QUAI,,Le Quai,47.472286,-0.5664480000000001,0,Europe/Paris,1,-1,6,6

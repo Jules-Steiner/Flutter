@@ -84,7 +84,7 @@ class _AngersMapState extends State<AngersMap> {
                                   children: [
                                     Icon(
                                       Icons.location_pin,
-                                      color: favoritesBloc.isFavorite(busStop.stopCode)
+                                      color: favoritesBloc.isFavorite(busStop.stopId)
                                           ? Colors.yellow
                                           : Colors.red,
                                       size: 40.0,
