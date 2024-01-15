@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:projet_flutter_tram/models/bus_stop.dart';
 import 'package:xml/xml.dart';
+import '../../bloc/favorites_bloc.dart';
 
 class DepartureTime extends StatefulWidget {
   const DepartureTime({super.key});
@@ -14,6 +15,7 @@ class _DepartureTimeState extends State<DepartureTime> {
   List<String> departureTimesList = [];
   bool isButtonEnabled = true;
   String currentBusStop = "";
+  bool isFavorite = false;
 
   Future<void> fetchDepartureTimes(BusStop busStop) async {
     if(busStop.stopId != "1AARD") {
@@ -101,11 +103,31 @@ class _DepartureTimeState extends State<DepartureTime> {
     final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final BusStop busStop = args['busStop'];
 
+    // Remove this line from the build method
+    // bool isFavorite = false;
+
+    favoritesBloc.favoritesStream.listen((List<String> favorites) {
+      setState(() {
+        isFavorite = favorites.contains(busStop.stopCode);
+        print(isFavorite);
+      });
+    });
+
     fetchDepartureTimes(busStop);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(busStop.stopName),
+        actions: [
+          // IconButton for the "Add to Favorites" button with a filled or outlined star
+          IconButton(
+            icon: isFavorite ? const Icon(Icons.star) : const Icon(Icons.star_border),
+            onPressed: () {
+              // Call the BLoC function to add/remove from favorites
+              favoritesBloc.toggleFavorite(busStop.stopCode); // Use the unique identifier of the stop
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
