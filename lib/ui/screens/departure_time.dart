@@ -18,7 +18,11 @@ class _DepartureTimeState extends State<DepartureTime> {
   bool isFavorite = false;
 
   Future<void> fetchDepartureTimes(BusStop busStop) async {
-    if(busStop.stopId != "1AARD") {
+    if(busStop.stopId == "1AARD" || busStop.stopId == "2MONP" || busStop.stopId == "1BBCA") {
+      if (isButtonEnabled) {
+        currentBusStop = busStop.stopId;
+      }
+    } else {
       if (isButtonEnabled) {
         currentBusStop = '2${busStop.stopId.substring(1)}';
       } else {
@@ -62,27 +66,37 @@ class _DepartureTimeState extends State<DepartureTime> {
       final xmlDocument = XmlDocument.parse(responseBody);
 
       final List<String> departureTimes = [];
+
+      print(responseBody);
+
       final monitoredVisits = xmlDocument.findAllElements('siri:MonitoredStopVisit');
       
       for (var visit in monitoredVisits) {
-        var vehicleJourney = visit.findElements('siri:MonitoredVehicleJourney').first;
-        var monitoredCall = vehicleJourney.findElements('siri:MonitoredCall').first;
-        var lineRef = vehicleJourney.findElements('siri:LineRef').first.text;
-        var destinationDisplay = monitoredCall.findElements('siri:DestinationDisplay').first.text;
-        var expectedArrivalTime = monitoredCall.findElements('siri:ExpectedArrivalTime').first.text;
+        try {
+          var vehicleJourney = visit.findElements('siri:MonitoredVehicleJourney').first;
+          var monitoredCall = vehicleJourney.findElements('siri:MonitoredCall').first;
+          var lineRef = vehicleJourney.findElements('siri:LineRef').first.text;
+          var destinationDisplay = monitoredCall.findElements('siri:DestinationDisplay').first.text;
+          var expectedArrivalTime = monitoredCall.findElements('siri:ExpectedArrivalTime').first.text;
 
-        if (expectedArrivalTime.isNotEmpty) {
-          DateTime arrivalDateTime = DateTime.parse(expectedArrivalTime);
-          DateTime now = DateTime.now();
-          
-          int minutesRemaining = arrivalDateTime.difference(now).inMinutes;
-          String formattedTime = "${arrivalDateTime.hour}:${arrivalDateTime.minute}:${arrivalDateTime.second}";
-          
-          String lineAndDestination = "Ligne $lineRef - Destination $destinationDisplay";
+          if (expectedArrivalTime.isNotEmpty) {
+            DateTime arrivalDateTime = DateTime.parse(expectedArrivalTime);
+            DateTime now = DateTime.now();
+            
+            int minutesRemaining = arrivalDateTime.difference(now).inMinutes;
+            String formattedTime = "${arrivalDateTime.hour}:${arrivalDateTime.minute}:${arrivalDateTime.second}";
+            
+            String lineAndDestination = "Ligne $lineRef - Destination $destinationDisplay";
 
-          departureTimes.add("$formattedTime - $minutesRemaining min - $lineAndDestination");
+            departureTimes.add("$formattedTime - $minutesRemaining min - $lineAndDestination");
+          } else {
+            print('ExpectedArrivalTime is empty for a monitored stop visit.');
+          }
+        } catch (e) {
+          print('Error parsing a MonitoredStopVisit: $e');
         }
       }
+
 
       setState(() {
         departureTimesList = departureTimes;
@@ -103,12 +117,9 @@ class _DepartureTimeState extends State<DepartureTime> {
     final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final BusStop busStop = args['busStop'];
 
-    // Remove this line from the build method
-    // bool isFavorite = false;
-
     favoritesBloc.favoritesStream.listen((List<String> favorites) {
       setState(() {
-        isFavorite = favorites.contains(busStop.stopCode);
+        isFavorite = favorites.contains(busStop.stopId);
         print(isFavorite);
       });
     });
@@ -119,12 +130,10 @@ class _DepartureTimeState extends State<DepartureTime> {
       appBar: AppBar(
         title: Text(busStop.stopName),
         actions: [
-          // IconButton for the "Add to Favorites" button with a filled or outlined star
           IconButton(
             icon: isFavorite ? const Icon(Icons.star) : const Icon(Icons.star_border),
             onPressed: () {
-              // Call the BLoC function to add/remove from favorites
-              favoritesBloc.toggleFavorite(busStop.stopCode); // Use the unique identifier of the stop
+              favoritesBloc.toggleFavorite(busStop.stopId);
             },
           ),
         ],
